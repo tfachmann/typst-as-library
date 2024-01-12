@@ -1,0 +1,27 @@
+[package]
+name = "typst-as-library"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# typst essentials
+typst = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
+comemo = "0.3"
+
+# typst rendering (for demonstration purpose)
+typst-pdf = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
+typst-svg = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
+
+# Fetching and unzipping packages
+zune-inflate = { version = "0.2", default_features = false, features = [
+  "gzip",
+  "std",
+] }
+tar = "0.4"
+ureq = "2.9"
+
+# utils
+time = "0.3"
+ttf-parser = "0.20"
