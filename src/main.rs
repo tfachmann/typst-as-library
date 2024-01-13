@@ -25,7 +25,7 @@ A document (+ `polylux` library) rendered with `Typst`!
 
     // Render document
     let mut tracer = Tracer::default();
-    let document = typst::compile(&world, &mut tracer).unwrap();
+    let document = typst::compile(&world, &mut tracer).expect("Error compiling typst.");
 
     // Output to pdf and svg
     let pdf = typst_pdf::pdf(&document, None, None);
