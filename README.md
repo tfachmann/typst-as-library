@@ -1,5 +1,7 @@
 # Typst as Library
 
+As of March 15th, 2024 (typst version `0.11.0`) it has finally been published to [crates.io](https://crates.io/crates/typst), so there is no more need for git dependencies.
+
 This repository shows how to use [typst](https://github.com/typst/typst) as a library in Rust.
 
 ```rust
