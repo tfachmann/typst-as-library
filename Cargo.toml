@@ -25,3 +25,6 @@ ureq = "2.9"
 # utils
 time = "0.3"
 ttf-parser = "0.20"
+
+[lib]
+name = "typst_as_library"

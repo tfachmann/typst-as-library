@@ -1,9 +1,7 @@
 use std::fs;
 
-mod rendering;
-
-use rendering::TypstWrapperWorld;
 use typst::{eval::Tracer, layout::Abs};
+use typst_as_library::TypstWrapperWorld;
 
 fn main() {
     let content = r#"
