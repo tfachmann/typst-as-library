@@ -1,5 +1,6 @@
 use std::fs;
 
+use typst::foundations::Smart;
 use typst::{eval::Tracer, layout::Abs};
 use typst_as_library::TypstWrapperWorld;
 
@@ -26,11 +27,11 @@ A document (+ `polylux` library) rendered with `Typst`!
     let document = typst::compile(&world, &mut tracer).expect("Error compiling typst.");
 
     // Output to pdf and svg
-    let pdf = typst_pdf::pdf(&document, None, None);
+    let pdf = typst_pdf::pdf(&document, Smart::Auto, None);
     fs::write("./output.pdf", pdf).expect("Error writing PDF.");
     println!("Created pdf: `./output.pdf`");
 
-    let svg = typst_svg::svg_merged(&document.pages, Abs::pt(2.0));
+    let svg = typst_svg::svg_merged(&document, Abs::pt(2.0));
     fs::write("./output.svg", svg).expect("Error writing SVG.");
     println!("Created svg: `./output.svg`");
 }

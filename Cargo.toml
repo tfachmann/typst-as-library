@@ -7,12 +7,12 @@ edition = "2021"
 
 [dependencies]
 # typst essentials
-typst = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
-comemo = "0.3"
+typst = "0.11.0"
+comemo = "0.4"
 
 # typst rendering (for demonstration purpose)
-typst-pdf = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
-typst-svg = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
+typst-pdf = "0.11.0"
+typst-svg = "0.11.0"
 
 # Fetching and unzipping packages
 zune-inflate = { version = "0.2", default_features = false, features = [
