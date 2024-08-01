@@ -215,7 +215,7 @@ impl typst::World for TypstWrapperWorld {
 /// Helper function
 fn fonts() -> Vec<Font> {
     std::fs::read_dir("fonts")
-        .unwrap()
+        .expect("Could not read fonts from disk")
         .map(Result::unwrap)
         .flat_map(|entry| {
             let path = entry.path();

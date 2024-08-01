@@ -1,0 +1,10 @@
+[package]
+name = "typst-as-library-example"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+typst = "0.11"
+typst-as-library = { path = "../.." }
+typst-pdf = "0.11"
+typst-svg = "0.11"

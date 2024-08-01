@@ -7,15 +7,11 @@ edition = "2021"
 
 [dependencies]
 # typst essentials
-typst = "0.11.0"
+typst = "0.11"
 comemo = "0.4"
 
-# typst rendering (for demonstration purpose)
-typst-pdf = "0.11.0"
-typst-svg = "0.11.0"
-
 # Fetching and unzipping packages
-zune-inflate = { version = "0.2", default_features = false, features = [
+zune-inflate = { version = "0.2", default-features = false, features = [
   "gzip",
   "std",
 ] }
@@ -24,7 +20,7 @@ ureq = "2.9"
 
 # utils
 time = "0.3"
-ttf-parser = "0.20"
+ttf-parser = "0.24"
 
 [lib]
 name = "typst_as_library"
