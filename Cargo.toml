@@ -24,3 +24,6 @@ ttf-parser = "0.24"
 
 [lib]
 name = "typst_as_library"
+
+[dev-dependencies]
+typst-pdf = "0.11"
