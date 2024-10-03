@@ -1,6 +1,6 @@
 use std::cell::{RefCell, RefMut};
 use std::collections::HashMap;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use comemo::Prehashed;
 use typst::diag::{eco_format, FileError, FileResult, PackageError, PackageResult};
@@ -42,12 +42,13 @@ pub struct TypstWrapperWorld {
 
 impl TypstWrapperWorld {
     pub fn new(root: String, source: String) -> Self {
-        let fonts = fonts();
+        let root = PathBuf::from(root);
+        let fonts = fonts(&root);
 
         Self {
             library: Prehashed::new(Library::default()),
             book: Prehashed::new(FontBook::from_fonts(&fonts)),
-            root: PathBuf::from(root),
+            root,
             fonts,
             source: Source::detached(source),
             time: time::OffsetDateTime::now_utc(),
@@ -213,8 +214,8 @@ impl typst::World for TypstWrapperWorld {
 }
 
 /// Helper function
-fn fonts() -> Vec<Font> {
-    std::fs::read_dir("fonts")
+fn fonts(root: &Path) -> Vec<Font> {
+    std::fs::read_dir(root.join("fonts"))
         .expect("Could not read fonts from disk")
         .map(Result::unwrap)
         .flat_map(|entry| {
