@@ -9,17 +9,19 @@ fn main() {
     let content = "= Hello, World!";
 
     // All the abstraction needed is here (!)
-    let world = TypstWrapperWorld::new("./".to_owned(), content);
+    let world = TypstWrapperWorld::new("./".to_owned(), content.to_owned());
 
     // Render document
     let mut tracer = Tracer::default();
     let document = typst::compile(&world, &mut tracer).expect("Error compiling typst");
 
     // Output to pdf
-    let pdf = typst_pdf::pdf(&document, None, None);
+    let pdf = typst_pdf::pdf(&document, Smart::Auto, None);
     fs::write("./output.pdf", pdf).expect("Error writing PDF.");
 }
 ```
+
+You can run the example above via `cargo run --example readme`
 
 ---
 

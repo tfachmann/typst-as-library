@@ -20,7 +20,7 @@ A document (+ `polylux` library) rendered with `Typst`!
     .to_owned();
 
     // Create world with content.
-    let world = TypstWrapperWorld::new("./".to_owned(), content);
+    let world = TypstWrapperWorld::new("../".to_owned(), content);
 
     // Render document
     let mut tracer = Tracer::default();
