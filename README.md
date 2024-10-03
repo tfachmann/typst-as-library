@@ -21,6 +21,8 @@ fn main() {
 }
 ```
 
+You can run the example above via `cargo run --example readme`
+
 ---
 
 ## Acknowledgment
