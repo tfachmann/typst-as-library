@@ -1,8 +1,8 @@
-use std::cell::{RefCell, RefMut};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::sync::{Arc, Mutex};
 
-use typst::diag::{eco_format, EcoString, FileError, FileResult, PackageError, PackageResult};
+use typst::diag::{eco_format, FileError, FileResult, PackageError, PackageResult};
 use typst::foundations::{Bytes, Datetime};
 use typst::syntax::package::PackageSpec;
 use typst::syntax::{FileId, Source};
@@ -28,7 +28,7 @@ pub struct TypstWrapperWorld {
     fonts: Vec<Font>,
 
     /// Map of all known files.
-    files: RefCell<HashMap<FileId, FileEntry>>,
+    files: Arc<Mutex<HashMap<FileId, FileEntry>>>,
 
     /// Cache directory (e.g. where packages are downloaded to).
     cache_directory: PathBuf,
@@ -56,7 +56,7 @@ impl TypstWrapperWorld {
                 .map(|os_path| os_path.into())
                 .unwrap_or(std::env::temp_dir()),
             http: ureq::Agent::new(),
-            files: RefCell::new(HashMap::new()),
+            files: Arc::new(Mutex::new(HashMap::new())),
         }
     }
 }
@@ -93,9 +93,10 @@ impl TypstWrapperWorld {
     /// Helper to handle file requests.
     ///
     /// Requests will be either in packages or a local file.
-    fn file(&self, id: FileId) -> FileResult<RefMut<'_, FileEntry>> {
-        if let Ok(entry) = RefMut::filter_map(self.files.borrow_mut(), |files| files.get_mut(&id)) {
-            return Ok(entry);
+    fn file(&self, id: FileId) -> FileResult<FileEntry> {
+        let mut files = self.files.lock().map_err(|_| FileError::AccessDenied)?;
+        if let Some(entry) = files.get(&id) {
+            return Ok(entry.clone());
         }
         let path = if let Some(package) = id.package() {
             // Fetching file from package
@@ -106,11 +107,12 @@ impl TypstWrapperWorld {
             id.vpath().resolve(&self.root)
         }
         .ok_or(FileError::AccessDenied)?;
-        // Err(FileError::NotFound(id.vpath().as_rootless_path().into()))
+
         let content = std::fs::read(&path).map_err(|error| FileError::from_io(error, &path))?;
-        Ok(RefMut::map(self.files.borrow_mut(), |files| {
-            files.entry(id).or_insert(FileEntry::new(content, None))
-        }))
+        Ok(files
+            .entry(id)
+            .or_insert(FileEntry::new(content, None))
+            .clone())
     }
 
     /// Downloads the package and returns the system path of the unpacked package.
