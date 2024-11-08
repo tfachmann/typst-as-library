@@ -2,12 +2,12 @@ use std::cell::{RefCell, RefMut};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
-use comemo::Prehashed;
-use typst::diag::{eco_format, FileError, FileResult, PackageError, PackageResult};
+use typst::diag::{eco_format, EcoString, FileError, FileResult, PackageError, PackageResult};
 use typst::foundations::{Bytes, Datetime};
 use typst::syntax::package::PackageSpec;
 use typst::syntax::{FileId, Source};
 use typst::text::{Font, FontBook};
+use typst::utils::LazyHash;
 use typst::Library;
 
 /// Main interface that determines the environment for Typst.
@@ -19,10 +19,10 @@ pub struct TypstWrapperWorld {
     source: Source,
 
     /// The standard library.
-    library: Prehashed<Library>,
+    library: LazyHash<Library>,
 
     /// Metadata about all known fonts.
-    book: Prehashed<FontBook>,
+    book: LazyHash<FontBook>,
 
     /// Metadata about all known fonts.
     fonts: Vec<Font>,
@@ -46,8 +46,8 @@ impl TypstWrapperWorld {
         let fonts = fonts(&root);
 
         Self {
-            library: Prehashed::new(Library::default()),
-            book: Prehashed::new(FontBook::from_fonts(&fonts)),
+            library: LazyHash::new(Library::default()),
+            book: LazyHash::new(FontBook::from_fonts(&fonts)),
             root,
             fonts,
             source: Source::detached(source),
@@ -169,18 +169,18 @@ impl TypstWrapperWorld {
 /// I have tried to keep it as minimal as possible
 impl typst::World for TypstWrapperWorld {
     /// Standard library.
-    fn library(&self) -> &Prehashed<Library> {
+    fn library(&self) -> &LazyHash<Library> {
         &self.library
     }
 
     /// Metadata about all known Books.
-    fn book(&self) -> &Prehashed<FontBook> {
+    fn book(&self) -> &LazyHash<FontBook> {
         &self.book
     }
 
     /// Accessing the main source file.
-    fn main(&self) -> Source {
-        self.source.clone()
+    fn main(&self) -> FileId {
+        self.source.id()
     }
 
     /// Accessing a specified source file (based on `FileId`).
