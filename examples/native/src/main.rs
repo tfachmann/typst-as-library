@@ -1,8 +1,8 @@
 use std::fs;
 
-use typst::foundations::Smart;
-use typst::{eval::Tracer, layout::Abs};
+use typst::layout::Abs;
 use typst_as_library::TypstWrapperWorld;
+use typst_pdf::PdfOptions;
 
 fn main() {
     let content = r#"
@@ -23,11 +23,12 @@ A document (+ `polylux` library) rendered with `Typst`!
     let world = TypstWrapperWorld::new("../".to_owned(), content);
 
     // Render document
-    let mut tracer = Tracer::default();
-    let document = typst::compile(&world, &mut tracer).expect("Error compiling typst.");
+    let document = typst::compile(&world)
+        .output
+        .expect("Error compiling typst");
 
     // Output to pdf and svg
-    let pdf = typst_pdf::pdf(&document, Smart::Auto, None);
+    let pdf = typst_pdf::pdf(&document, &PdfOptions::default()).expect("Error exporting PDF");
     fs::write("./output.pdf", pdf).expect("Error writing PDF.");
     println!("Created pdf: `./output.pdf`");
 
