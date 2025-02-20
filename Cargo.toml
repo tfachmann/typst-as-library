@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 # typst essentials
-typst = "0.12"
+typst = "0.13"
 comemo = "0.4"
 
 # Fetching and unzipping packages
@@ -26,4 +26,4 @@ ttf-parser = "0.25"
 name = "typst_as_library"
 
 [dev-dependencies]
-typst-pdf = "0.12"
+typst-pdf = "0.13"

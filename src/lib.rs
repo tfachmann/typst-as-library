@@ -71,7 +71,7 @@ struct FileEntry {
 impl FileEntry {
     fn new(bytes: Vec<u8>, source: Option<Source>) -> Self {
         Self {
-            bytes: bytes.into(),
+            bytes: Bytes::new(bytes),
             source,
         }
     }
@@ -223,7 +223,7 @@ fn fonts(root: &Path) -> Vec<Font> {
         .flat_map(|entry| {
             let path = entry.path();
             let bytes = std::fs::read(&path).unwrap();
-            let buffer = Bytes::from(bytes);
+            let buffer = Bytes::new(bytes);
             let face_count = ttf_parser::fonts_in_collection(&buffer).unwrap_or(1);
             (0..face_count).map(move |face| {
                 Font::new(buffer.clone(), face).unwrap_or_else(|| {

@@ -6,14 +6,19 @@ use typst_pdf::PdfOptions;
 
 fn main() {
     let content = r#"
-#import "@preview/polylux:0.3.1": *
-#import themes.simple: *
+#import "@preview/polylux:0.4.0": *
 
 #set page(paper: "presentation-16-9")
 
-#show: simple-theme.with()
+#set text(
+  font: "Lato",
+  size: 23pt,
+)
 
-#title-slide[
+#slide[
+  #set page(footer: none)
+  #set align(horizon + center)
+
 = Hello, World!
 A document (+ `polylux` library) rendered with `Typst`!
 ]"#

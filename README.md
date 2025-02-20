@@ -1,8 +1,8 @@
 # Typst as Library
 
-As of March 15th, 2024 (typst version `0.11.0`) it has finally been published to [crates.io](https://crates.io/crates/typst), so there is no more need for git dependencies.
-
 This repository shows how to use [typst](https://github.com/typst/typst) as a library in Rust.
+Any code presented in this repository is meant to help you understand how to interface with `typst`.
+Please use the code as you like.
 
 ```rust
 fn main() {
@@ -22,7 +22,7 @@ fn main() {
 }
 ```
 
-You can run the example above via `cargo run --example readme`
+Check the [example](https://github.com/tfachmann/typst-as-library/tree/main/examples/native) for more information.
 
 ---
 
