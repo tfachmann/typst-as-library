@@ -9,6 +9,7 @@ use typst::syntax::{FileId, Source};
 use typst::text::{Font, FontBook};
 use typst::utils::LazyHash;
 use typst::Library;
+use typst_kit::fonts::{FontSearcher, FontSlot};
 
 /// Main interface that determines the environment for Typst.
 pub struct TypstWrapperWorld {
@@ -25,7 +26,7 @@ pub struct TypstWrapperWorld {
     book: LazyHash<FontBook>,
 
     /// Metadata about all known fonts.
-    fonts: Vec<Font>,
+    fonts: Vec<FontSlot>,
 
     /// Map of all known files.
     files: Arc<Mutex<HashMap<FileId, FileEntry>>>,
@@ -43,13 +44,13 @@ pub struct TypstWrapperWorld {
 impl TypstWrapperWorld {
     pub fn new(root: String, source: String) -> Self {
         let root = PathBuf::from(root);
-        let fonts = fonts(&root);
+        let fonts = FontSearcher::new().include_system_fonts(true).search();
 
         Self {
             library: LazyHash::new(Library::default()),
-            book: LazyHash::new(FontBook::from_fonts(&fonts)),
+            book: LazyHash::new(fonts.book),
             root,
-            fonts,
+            fonts: fonts.fonts,
             source: Source::detached(source),
             time: time::OffsetDateTime::now_utc(),
             cache_directory: std::env::var_os("CACHE_DIRECTORY")
@@ -201,7 +202,7 @@ impl typst::World for TypstWrapperWorld {
 
     /// Accessing a specified font per index of font book.
     fn font(&self, id: usize) -> Option<Font> {
-        self.fonts.get(id).cloned()
+        self.fonts[id].get()
     }
 
     /// Get the current date.
