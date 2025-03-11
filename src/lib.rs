@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 use typst::diag::{eco_format, FileError, FileResult, PackageError, PackageResult};
@@ -214,25 +214,6 @@ impl typst::World for TypstWrapperWorld {
         let time = self.time.checked_to_offset(offset)?;
         Some(Datetime::Date(time.date()))
     }
-}
-
-/// Helper function
-fn fonts(root: &Path) -> Vec<Font> {
-    std::fs::read_dir(root.join("fonts"))
-        .expect("Could not read fonts from disk")
-        .map(Result::unwrap)
-        .flat_map(|entry| {
-            let path = entry.path();
-            let bytes = std::fs::read(&path).unwrap();
-            let buffer = Bytes::new(bytes);
-            let face_count = ttf_parser::fonts_in_collection(&buffer).unwrap_or(1);
-            (0..face_count).map(move |face| {
-                Font::new(buffer.clone(), face).unwrap_or_else(|| {
-                    panic!("failed to load font from {path:?} (face index {face})")
-                })
-            })
-        })
-        .collect()
 }
 
 fn retry<T, E>(mut f: impl FnMut() -> Result<T, E>) -> Result<T, E> {
