@@ -9,6 +9,8 @@ fn main() {
 #import "@preview/polylux:0.4.0": *
 
 #set page(paper: "presentation-16-9")
+#show math.equation: set text(font: "Libertinus Math");
+
 
 #set text(
   font: "Lato",
@@ -21,6 +23,7 @@ fn main() {
 
 = Hello, World!
 A document (+ `polylux` library) rendered with `Typst`!
+$ y = m x + n $
 ]"#
     .to_owned();
 
