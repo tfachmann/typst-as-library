@@ -21,7 +21,7 @@ ureq = "2.9"
 # utils
 time = "0.3"
 ttf-parser = "0.25"
-typst-kit = "0.13.1"
+typst-kit = { version = "0.13", features = ["embed-fonts"] }
 
 [lib]
 name = "typst_as_library"
