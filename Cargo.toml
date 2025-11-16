@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 # typst essentials
-typst = "0.13"
+typst = "0.13.1"
 comemo = "0.4"
 
 # Fetching and unzipping packages
@@ -21,10 +21,10 @@ ureq = "2.9"
 # utils
 time = "0.3"
 ttf-parser = "0.25"
-typst-kit = { version = "0.13", features = ["embed-fonts"] }
+typst-kit = { version = "0.13.1", features = ["embed-fonts"] }
 
 [lib]
 name = "typst_as_library"
 
 [dev-dependencies]
-typst-pdf = "0.13"
+typst-pdf = "0.13.1"

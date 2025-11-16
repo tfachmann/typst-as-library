@@ -9,7 +9,6 @@ fn main() {
 #import "@preview/polylux:0.4.0": *
 
 #set page(paper: "presentation-16-9")
-#show math.equation: set text(font: "Libertinus Math");
 
 
 #set text(

@@ -1,0 +1,12 @@
+[package]
+name = "typst-as-library-web"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+typst-as-library = { path = "../.." }
+typst = "0.11"
+typst-svg = "0.11"
+
+leptos = { version = "0.6", features = ["csr"] }
+console_error_panic_hook = "0.1.7"
